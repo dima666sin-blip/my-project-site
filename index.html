@@ -404,7 +404,12 @@
     // ============================================================
     // Telegram отправляется через локальный Python-сервер.
     // Токен бота НЕ хранится в HTML.
-    const PAYMENT_URL = 'https://www.tbank-online.com/rm/r_zgeFzXZvvW.ADpNiRWARa/B64nf66816';
+    // Ссылки на оплату для каждого товара.
+    const PAYMENT_URLS = {
+        'Теория для индивидуального проекта': 'https://yookassa.ru/my/i/ar3Z1-IBEUfW/l',
+        'Изготовление презентаций': 'https://yookassa.ru/my/i/ar3Z82M2bObY/l',
+        'Изготовление учебных пособий': 'https://yookassa.ru/my/i/ar3aCKSs78Bi/l'
+    };
 
     const modalOverlay = document.getElementById('modalOverlay');
     const modalProductName = document.getElementById('modalProductName');
@@ -495,7 +500,13 @@
             }
 
             modalOverlay.classList.remove('active');
-            window.location.href = PAYMENT_URL;
+
+            const paymentUrl = PAYMENT_URLS[product];
+            if (!paymentUrl) {
+                throw new Error('Для выбранного товара не настроена ссылка на оплату.');
+            }
+
+            window.location.href = paymentUrl;
 
         } catch (err) {
             console.error('Ошибка отправки:', err);
